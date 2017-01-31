@@ -1,0 +1,6 @@
+
+/target/
+/spring-boot-k8s-graceful-shutdown.ipr
+/spring-boot-k8s-graceful-shutdown.iws
+/atlassian-ide-plugin.xml
+/spring-boot-k8s-graceful-shutdown.iml

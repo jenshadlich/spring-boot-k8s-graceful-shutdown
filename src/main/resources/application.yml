@@ -1,0 +1,5 @@
+server:
+  port: 8080
+
+logback.access:
+  config: "classpath:logback-access.xml"
