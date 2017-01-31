@@ -1,5 +1,13 @@
 server:
   port: 8080
 
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+
+logging:
+  config: "classpath:logback.xml"
+
 logback.access:
   config: "classpath:logback-access.xml"
