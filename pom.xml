@@ -17,6 +17,9 @@
     </scm>
 
     <properties>
+        <jar.name>${project.artifactId}-${project.version}.jar</jar.name>
+        <port>8080</port>
+
         <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
         <guava.version>18.0</guava.version>
         <junit.version>4.12</junit.version>
@@ -27,6 +30,8 @@
         
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
+        <git-commit-id-plugin.version>2.2.2</git-commit-id-plugin.version>
+        <docker-maven-plugin.version>0.20.0</docker-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -145,6 +150,84 @@
                     <doCheck>false</doCheck>
                     <doUpdate>false</doUpdate>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <prefix>git</prefix>
+                    <dateFormat>yyyy-MM-dd</dateFormat>
+                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
+                    <verbose>true</verbose>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <skipPoms>true</skipPoms>
+                    <generateGitPropertiesFile>false</generateGitPropertiesFile>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <excludeProperties>
+                    </excludeProperties>
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>false</always>
+                        <abbrev>7</abbrev>
+                        <dirty>-dirty</dirty>
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>jenshadlich/spring-boot-k8s-graceful-shutdown:${git.commit.id}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <from>openjdk:8u111-jre-alpine</from>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${git.commit.id}</tag>
+                                    <tag>${git.commit.time}.${git.commit.id}</tag>
+                                </tags>
+                                <assembly>
+                                    <descriptor>assembly.xml</descriptor>
+                                </assembly>
+                                <ports>
+                                    <port>${port}</port>
+                                </ports>
+                                <cmd>
+                                    <shell>java -jar /maven/${jar.name}</shell>
+                                </cmd>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build-docker-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>push-docker-image-to-registry</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
