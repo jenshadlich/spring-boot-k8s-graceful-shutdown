@@ -19,6 +19,7 @@
     <properties>
         <jar.name>${project.artifactId}-${project.version}.jar</jar.name>
         <port>8080</port>
+        <jmxPort>9000</jmxPort>
 
         <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
         <guava.version>18.0</guava.version>
@@ -206,7 +207,7 @@
                                     <port>${port}</port>
                                 </ports>
                                 <entryPoint>
-                                    <shell>java -jar /maven/${jar.name} -server -Dfile.encoding=UTF8</shell>
+                                    <shell>java -jar /maven/${jar.name} -server -Dfile.encoding=UTF8 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=${jmxPort} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</shell>
                                 </entryPoint>
                             </build>
                         </image>
