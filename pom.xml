@@ -193,7 +193,7 @@
                             <name>jenshadlich/spring-boot-k8s-graceful-shutdown:${git.commit.id}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
-                                <from>openjdk:8u111-jre-alpine</from>
+                                <from>openjdk:8u121-jre-alpine</from>
                                 <tags>
                                     <tag>latest</tag>
                                     <tag>${git.commit.id}</tag>
@@ -205,9 +205,9 @@
                                 <ports>
                                     <port>${port}</port>
                                 </ports>
-                                <cmd>
-                                    <shell>java -jar /maven/${jar.name}</shell>
-                                </cmd>
+                                <entryPoint>
+                                    <shell>java -jar /maven/${jar.name} -server -Dfile.encoding=UTF8</shell>
+                                </entryPoint>
                             </build>
                         </image>
                     </images>
