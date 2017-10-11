@@ -20,7 +20,7 @@
         <jar.name>${project.artifactId}-${project.version}.jar</jar.name>
         <port>8080</port>
 
-        <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.7.RELEASE</spring-boot.version>
         <guava.version>18.0</guava.version>
         <junit.version>4.12</junit.version>
         <logback.version>1.1.9</logback.version>
@@ -28,10 +28,10 @@
         <buildTime>${maven.build.timestamp}</buildTime>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss</maven.build.timestamp.format>
         
-        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
         <git-commit-id-plugin.version>2.2.2</git-commit-id-plugin.version>
-        <docker-maven-plugin.version>0.20.0</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.22.0</docker-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -83,11 +83,10 @@
             <artifactId>logback-access</artifactId>
             <version>${logback.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>net.rakugakibox.springbootext</groupId>
-            <artifactId>spring-boot-ext-logback-access</artifactId>
-            <version>1.6</version>
+            <groupId>net.rakugakibox.spring.boot</groupId>
+            <artifactId>logback-access-spring-boot-starter</artifactId>
+            <version>2.6.0</version>
         </dependency>
 
         <dependency>
